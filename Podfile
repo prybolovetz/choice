@@ -7,10 +7,12 @@ target 'choice' do
 
   # Pods for choice
 
-pod 'Firebase/Core'
 pod 'Firebase/Database'
 pod 'Firebase/Auth'
 pod 'Firebase/Storage'
+pod 'Firebase/Core'
+
+
 
 end
 

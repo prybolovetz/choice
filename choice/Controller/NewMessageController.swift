@@ -1,9 +1,9 @@
 //
-//  NewMessagesController.swift
-//  choice
+//  NewMessageController.swift
+//  gameofchats
 //
-//  Created by Ivan on 12/31/18.
-//  Copyright © 2018 Ivan Prybolovetz. All rights reserved.
+//  Created by Brian Voong on 6/29/16.
+//  Copyright © 2016 letsbuildthatapp. All rights reserved.
 //
 
 import UIKit
@@ -14,7 +14,7 @@ class NewMessageController: UITableViewController {
     let cellId = "cellId"
     
     var users = [User]()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -33,12 +33,12 @@ class NewMessageController: UITableViewController {
                 self.users.append(user)
                 
                 //this will crash because of background thread, so lets use dispatch_async to fix
-                DispatchQueue.main.async(execute: {
+                DispatchQueue.main.async(execute: { 
                     self.tableView.reloadData()
                 })
             }
             
-        }, withCancel: nil)
+            }, withCancel: nil)
     }
     
     @objc func handleCancel() {
@@ -52,7 +52,7 @@ class NewMessageController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         // let use a hack for now, we actually need to dequeue our cells for memory efficiency
-        //        let cell = UITableViewCell(style: .Subtitle, reuseIdentifier: cellId)
+//        let cell = UITableViewCell(style: .Subtitle, reuseIdentifier: cellId)
         
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
         
@@ -62,7 +62,7 @@ class NewMessageController: UITableViewController {
         
         return cell
     }
-    
+
 }
 
 class UserCell: UITableViewCell {
