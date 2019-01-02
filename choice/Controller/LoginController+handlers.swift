@@ -1,9 +1,9 @@
 //
-//  LoginController+ Helpers.swift
-//  choice
+//  LoginController+handlers.swift
+//  gameofchats
 //
-//  Created by Ivan on 1/2/19.
-//  Copyright © 2019 Ivan Prybolovetz. All rights reserved.
+//  Created by Brian Voong on 7/4/16.
+//  Copyright © 2016 letsbuildthatapp. All rights reserved.
 //
 
 import UIKit
@@ -19,8 +19,8 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
         
         Auth.auth().createUser(withEmail: email, password: password, completion: { (user, error) in
             
-            if let error = error {
-                print(error)
+            if error != nil {
+                print(error ?? "")
                 return
             }
             
@@ -30,10 +30,10 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
             
             //successfully authenticated user
             let imageName = UUID().uuidString
-            let storageRef = Storage.storage().reference().child("profile_images").child("\(imageName).png")
+            let storageRef = Storage.storage().reference().child("profile_images").child("\(imageName).jpg")
             
-            if let uploadData = self.profileImageView.image?.pngData() {
-                
+            if let profileImage = self.profileImageView.image, let uploadData = profileImage.jpegData(compressionQuality: 0.1) {
+            
                 storageRef.putData(uploadData, metadata: nil, completion: { (_, err) in
                     
                     if let error = error {
@@ -64,10 +64,15 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
         
         usersReference.updateChildValues(values, withCompletionBlock: { (err, ref) in
             
-            if let err = err {
-                print(err)
+            if err != nil {
+                print(err ?? "")
                 return
             }
+            
+//            self.messagesController?.fetchUserAndSetupNavBarTitle()
+//            self.messagesController?.navigationItem.title = values["name"] as? String
+            let user = User(dictionary: values)
+            self.messagesController?.setupNavBarWithUser(user)
             
             self.dismiss(animated: true, completion: nil)
         })
@@ -83,9 +88,9 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        // Local variable inserted by Swift 4.2 migrator.
-        let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
-        
+// Local variable inserted by Swift 4.2 migrator.
+let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
+
         
         var selectedImageFromPicker: UIImage?
         
@@ -113,5 +118,5 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
 
 // Helper function inserted by Swift 4.2 migrator.
 fileprivate func convertFromUIImagePickerControllerInfoKeyDictionary(_ input: [UIImagePickerController.InfoKey: Any]) -> [String: Any] {
-    return Dictionary(uniqueKeysWithValues: input.map {key, value in (key.rawValue, value)})
+	return Dictionary(uniqueKeysWithValues: input.map {key, value in (key.rawValue, value)})
 }

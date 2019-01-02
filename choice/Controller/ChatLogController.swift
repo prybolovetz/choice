@@ -97,3 +97,4 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate {
 
 
 
+

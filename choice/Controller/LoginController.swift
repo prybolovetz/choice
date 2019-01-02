@@ -1,15 +1,17 @@
 //
 //  LoginController.swift
-//  choice
+//  gameofchats
 //
-//  Created by Ivan on 12/30/18.
-//  Copyright © 2018 Ivan Prybolovetz. All rights reserved.
+//  Created by Brian Voong on 6/24/16.
+//  Copyright © 2016 letsbuildthatapp. All rights reserved.
 //
 
 import UIKit
 import Firebase
 
 class LoginController: UIViewController {
+    
+    var messagesController: MessagesController?
     
     let inputsContainerView: UIView = {
         let view = UIView()
@@ -49,50 +51,19 @@ class LoginController: UIViewController {
         
         Auth.auth().signIn(withEmail: email, password: password, completion: { (user, error) in
             
-            if let error = error {
-                print(error)
+            if error != nil {
+                print(error ?? "")
                 return
             }
             
             //successfully logged in our user
+            
+            self.messagesController?.fetchUserAndSetupNavBarTitle()
+            
             self.dismiss(animated: true, completion: nil)
             
         })
         
-    }
-    
-    func handleRegister() {
-        guard let email = emailTextField.text, let password = passwordTextField.text, let name = nameTextField.text else {
-            print("Form is not valid")
-            return
-        }
-        
-        Auth.auth().createUser(withEmail: email, password: password, completion: { (res, error) in
-            
-            if let error = error {
-                print(error)
-                return
-            }
-            
-            guard let uid = res?.user.uid else {
-                return
-            }
-            
-            //successfully authenticated user
-            let ref = Database.database().reference()
-            let usersReference = ref.child("users").child(uid)
-            let values = ["name": name, "email": email]
-            usersReference.updateChildValues(values, withCompletionBlock: { (err, ref) in
-                
-                if let err = err {
-                    print(err)
-                    return
-                }
-                
-                self.dismiss(animated: true, completion: nil)
-            })
-            
-        })
     }
     
     let nameTextField: UITextField = {
@@ -131,11 +102,15 @@ class LoginController: UIViewController {
         return tf
     }()
     
-    let profileImageView: UIImageView = {
+    lazy var profileImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "_")
+        imageView.image = UIImage(named: "gameofthrones_splash")
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
+        
+        imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleSelectProfileImageView)))
+        imageView.isUserInteractionEnabled = true
+        
         return imageView
     }()
     
@@ -280,3 +255,10 @@ extension UIColor {
     }
     
 }
+
+
+
+
+
+
+
