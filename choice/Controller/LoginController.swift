@@ -1,17 +1,19 @@
 //
 //  LoginController.swift
-//  gameofchats
+//  choice
 //
-//  Created by Brian Voong on 6/24/16.
-//  Copyright © 2016 letsbuildthatapp. All rights reserved.
+//  Created by Ivan on 1/2/19.
+//  Copyright © 2019 Ivan Prybolovetz. All rights reserved.
 //
 
 import UIKit
 import Firebase
+//import SwiftKeychainWrapper
 
 class LoginController: UIViewController {
     
     var messagesController: MessagesController?
+//    var userUid: String!
     
     let inputsContainerView: UIView = {
         let view = UIView()
@@ -55,6 +57,12 @@ class LoginController: UIViewController {
                 print(error ?? "")
                 return
             }
+//            else {
+//                self.userUid = user?.uid
+//                KeychainWrapper.standard.set( self.userUid, forKey: "uid")
+//
+//            performSegue(withIdentifier: "", sender: nil)
+//            }
             
             //successfully logged in our user
             

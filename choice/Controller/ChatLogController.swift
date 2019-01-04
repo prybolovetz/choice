@@ -1,9 +1,9 @@
 //
 //  ChatLogController.swift
-//  gameofchats
+//  choice
 //
-//  Created by Brian Voong on 7/7/16.
-//  Copyright © 2016 letsbuildthatapp. All rights reserved.
+//  Created by Ivan on 1/2/19.
+//  Copyright © 2019 Ivan Prybolovetz. All rights reserved.
 //
 
 import UIKit
